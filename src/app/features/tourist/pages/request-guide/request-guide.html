@@ -1,0 +1,26 @@
+<h2 class="h4 mb-3">Request Guide Booking</h2>
+<div class="alert alert-info">Pay guide in person later according to activity flow.</div>
+<form [formGroup]="form" (ngSubmit)="submit()" class="card card-body">
+  <div class="mb-3">
+    <label class="form-label">Requested Date</label>
+    <input type="date" class="form-control" formControlName="date" [class.is-invalid]="form.controls.date.touched && form.controls.date.invalid" />
+    <div class="invalid-feedback">Date is required.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tour Plan Note</label>
+    <textarea class="form-control" rows="3" formControlName="note" [class.is-invalid]="form.controls.note.touched && form.controls.note.invalid"></textarea>
+    <div class="invalid-feedback">Minimum 10 characters required.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Proposed Price (BDT)</label>
+    <input type="number" class="form-control" formControlName="proposedPrice" [class.is-invalid]="form.controls.proposedPrice.touched && form.controls.proposedPrice.invalid" />
+    <div class="invalid-feedback">Must be at least 500 BDT.</div>
+  </div>
+  <button class="btn btn-primary" type="submit">Send Request</button>
+</form>
+@if (submitted()) {
+  <div class="alert alert-success mt-3">Booking request sent to guide.</div>
+}
+@if (error()) {
+  <div class="alert alert-danger mt-3">{{ error() }}</div>
+}

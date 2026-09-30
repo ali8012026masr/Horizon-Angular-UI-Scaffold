@@ -1,0 +1,77 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="h4 mb-1">Payment Table</h2>
+      <p class="text-muted mb-0">Demo payment records for provider transactions.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary" type="button" (click)="exportExcel()">Export Excel</button>
+      <button class="btn btn-primary" type="button" (click)="exportPdf()">Export PDF</button>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Invoice</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Service</th>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.invoice) {
+              <tr>
+                <td>{{ row.invoice }}</td>
+                <td>{{ row.customer }}</td>
+                <td>{{ row.service }}</td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.amount | currency: 'BDT' : 'symbol-narrow' : '1.0-0' }}</td>
+                <td>
+                  @switch (row.status) {
+                    @case ('Paid') {
+                      <span class="badge text-bg-success">Paid</span>
+                    }
+                    @case ('Pending') {
+                      <span class="badge text-bg-warning text-dark">Pending</span>
+                    }
+                    @case ('Refunded') {
+                      <span class="badge text-bg-danger">Refunded</span>
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+            <tr class="table-light">
+              <td colspan="4" class="text-end fw-semibold">Total Paid</td>
+              <td class="fw-semibold">{{ totalPaid() | currency: 'BDT' : 'symbol-narrow' : '1.0-0' }}</td>
+              <td></td>
+            </tr>
+            <tr class="table-light">
+              <td colspan="4" class="text-end fw-semibold">Total Pending</td>
+              <td class="fw-semibold">{{ totalPending() | currency: 'BDT' : 'symbol-narrow' : '1.0-0' }}</td>
+              <td></td>
+            </tr>
+            <tr class="table-light">
+              <td colspan="4" class="text-end fw-semibold">Total Refunded</td>
+              <td class="fw-semibold">{{ totalRefunded() | currency: 'BDT' : 'symbol-narrow' : '1.0-0' }}</td>
+              <td></td>
+            </tr>
+            <tr class="table-light border-top">
+              <td colspan="4" class="text-end fw-bold">Grand Total</td>
+              <td class="fw-bold">{{ grandTotal() | currency: 'BDT' : 'symbol-narrow' : '1.0-0' }}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

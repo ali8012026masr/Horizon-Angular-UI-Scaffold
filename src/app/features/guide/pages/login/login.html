@@ -1,0 +1,29 @@
+<h2 class="h4 mb-3">Guide Login</h2>
+<form [formGroup]="form" (ngSubmit)="login()" class="row g-3">
+  <div class="col-12">
+    <label class="form-label">Email</label>
+    <input class="form-control" type="email" formControlName="email" />
+    @if (form.controls.email.invalid && form.controls.email.touched) {
+      <div class="invalid-feedback d-block">Enter a valid email address.</div>
+    }
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Password</label>
+    <input class="form-control" type="password" formControlName="password" />
+    @if (form.controls.password.invalid && form.controls.password.touched) {
+      <div class="invalid-feedback d-block">Enter your password (at least 6 characters).</div>
+    }
+  </div>
+
+  @if (invalid()) {
+    <div class="col-12 alert alert-danger">Invalid credentials. Use password123 for demo login.</div>
+  }
+
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Login</button>
+  </div>
+  <div class="col-12">
+    <a routerLink="/forgot-password" class="small">Forgot password?</a>
+  </div>
+</form>

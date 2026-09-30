@@ -1,0 +1,38 @@
+<h2 class="h4 mb-3">Conduct Tour</h2>
+<div class="row g-3">
+  <div class="col-12 col-md-6">
+    <div class="card p-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h3 class="h6 mb-1">Live GPS Sharing</h3>
+          <p class="small text-muted mb-0">Share your tour progress with the group.</p>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" [checked]="sharingEnabled()" (change)="toggleSharing()" id="sharingToggle" />
+          <label class="form-check-label" for="sharingToggle"></label>
+        </div>
+      </div>
+      @if (sharingError()) {
+        <div class="alert alert-danger mb-0">{{ sharingError() }}</div>
+      } @else if (sharingEnabled()) {
+        <div class="alert alert-success mb-0">GPS sharing is enabled. Tour members can track your route.</div>
+      } @else {
+        <div class="alert alert-secondary mb-0">GPS sharing is disabled.</div>
+      }
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card p-3">
+      <h3 class="h6 mb-3">Cash Payment</h3>
+      @if (!paymentRequested()) {
+        <button class="btn btn-outline-primary" type="button" (click)="requestPayment()">Receive Cash Payment</button>
+      } @else if (!paymentReceived()) {
+        <div class="mb-3"><span class="badge text-bg-warning">Awaiting payment</span></div>
+        <button class="btn btn-success" type="button" (click)="receivePayment()">Mark Payment Received</button>
+      } @else {
+        <div class="alert alert-success">Payment received and recorded.</div>
+      }
+    </div>
+  </div>
+</div>

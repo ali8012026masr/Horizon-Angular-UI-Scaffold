@@ -1,0 +1,45 @@
+<h2 class="h4 mb-3">Service Detail</h2>
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (slot(); as slot) {
+  <div class="card">
+    <div class="card-body">
+      <h3 class="h5">
+        {{ categoryLabel(slot.category) }} |
+        @if (slot.origin) {
+          {{ slot.origin }} -> {{ slot.destination }}
+        } @else {
+          {{ slot.locationName }}
+        }
+      </h3>
+      <p class="mb-1"><strong>Provider:</strong> {{ slot.providerName }}</p>
+      <p class="mb-1"><strong>Date/Time:</strong> {{ slot.startAt | date: 'full' }}</p>
+      @if (slot.endAt) {
+        <p class="mb-1"><strong>Check-out:</strong> {{ slot.endAt | date: 'full' }}</p>
+      }
+      <p class="mb-1"><strong>Capacity:</strong> {{ slot.availableSeats }}/{{ slot.capacity }}</p>
+      <p class="mb-1"><strong>Status:</strong> {{ slot.status }}</p>
+      <p class="mb-3"><strong>Price:</strong> {{ slot.price | number }} BDT</p>
+      @if (slot.status === 'OPEN') {
+        <a class="btn btn-primary" [routerLink]="['/tourist/payment', slot.id]">
+          Continue to Booking + Payment
+        </a>
+        @if (cart.has(slot.id)) {
+          <a class="btn btn-outline-success ms-2" routerLink="/tourist/cart">In cart - view</a>
+        } @else {
+          <button class="btn btn-outline-primary ms-2" type="button" (click)="addToCart(slot)">Add to Cart</button>
+        }
+        @if (cartNotice(); as notice) {
+          <div class="alert mt-3 mb-0 py-2" [class.alert-success]="notice.ok" [class.alert-warning]="!notice.ok">
+            {{ notice.text }}
+          </div>
+        }
+      } @else {
+        <button class="btn btn-secondary" type="button" disabled>Not Available ({{ slot.status }})</button>
+      }
+    </div>
+  </div>
+}

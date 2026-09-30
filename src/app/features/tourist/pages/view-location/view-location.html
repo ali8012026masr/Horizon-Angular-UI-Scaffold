@@ -1,0 +1,32 @@
+<h2 class="h4 mb-3">Live GPS Tracking Map</h2>
+
+@if (trackableGuides().length > 1) {
+  <div class="mb-3">
+    <label class="form-label">Guide</label>
+    <select class="form-select" [ngModel]="selectedGuideId()" (ngModelChange)="selectGuide($event)">
+      @for (guide of trackableGuides(); track guide.guideId) {
+        <option [value]="guide.guideId">{{ guide.guideName }}</option>
+      }
+    </select>
+  </div>
+}
+
+<div class="card mb-3">
+  <div class="card-body p-0">
+    <div #mapContainer style="height: 400px; width: 100%;" class="rounded"></div>
+  </div>
+</div>
+
+@if (selfLocationError()) {
+  <p class="small text-muted mb-1">{{ selfLocationError() }}</p>
+}
+
+@if (trackableGuides().length === 0) {
+  <div class="alert alert-info mb-0">You have no active guide tour to track right now. The map above shows your own location if shared.</div>
+} @else {
+  @if (locationError()) {
+    <div class="alert alert-info mb-0">{{ locationError() }}</div>
+  } @else if (location()) {
+    <p class="small text-muted mb-0">Guide last updated: {{ location()!.updatedAt | date: 'mediumTime' }}</p>
+  }
+}

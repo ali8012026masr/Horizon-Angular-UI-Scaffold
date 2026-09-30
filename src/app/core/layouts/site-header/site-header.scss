@@ -1,0 +1,37 @@
+:host { display: block; }
+
+.brand-shell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.brand-logo {
+  width: auto;
+  max-height: 44px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  white-space: nowrap;
+  font-size: clamp(1rem, 1.3vw, 1.6rem);
+}
+
+.navbar { padding: 12px 0; }
+
+.notification-panel {
+  width: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  z-index: 1050;
+  border-radius: var(--horizon-radius-md);
+  box-shadow: var(--horizon-shadow);
+}
+
+@media (max-width: 576px) {
+  .brand-logo { max-height: 32px; }
+  .brand-text { font-size: 0.95rem; }
+}

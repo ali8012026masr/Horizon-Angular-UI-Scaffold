@@ -1,0 +1,64 @@
+<button (click)="toggleOpen()" class="floating-trigger shadow-float" aria-label="Open Travel Concierge">
+  <span class="bubble-icon">🏮</span>
+  <span class="bubble-text">Horizon AI</span>
+</button>
+
+<div class="concierge-drawer" [class.open]="isOpen()">
+  <div class="drawer-header">
+    <div class="header-logo">
+      <span class="logo-accent">✦</span>
+      <h3>Horizon Concierge</h3>
+    </div>
+    <button class="close-btn" (click)="toggleOpen()" aria-label="Close Travel Concierge">&times;</button>
+  </div>
+
+  <div class="messages-container" #scrollMe>
+    @if (chatService.history().length === 0) {
+      <div class="welcome-message text-center">
+        <span class="icon-stone">🪨</span>
+        <h4>Greetings, Traveler</h4>
+        <p>I am your local companion. Let's find cost-friendly paths, coordinate bookings, or optimize your tours organically.</p>
+      </div>
+    }
+
+    @for (msg of chatService.history(); track $index) {
+      <div class="message-wrapper" [class.user]="msg.role === 'user'" [class.ai]="msg.role === 'model'">
+        <div class="message-bubble">
+          {{ msg.text }}
+        </div>
+      </div>
+    }
+
+    @if (isLoading()) {
+      <div class="message-wrapper ai loading">
+        <div class="message-bubble typing-glow">
+          <span>&bull;</span><span>&bull;</span><span>&bull;</span>
+        </div>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="error-banner">{{ errorMessage() }}</div>
+    }
+  </div>
+
+  <div class="drawer-footer">
+    <div class="input-pill">
+      <input
+        #chatInput
+        type="text"
+        placeholder="Plan Cox's Bazar tour under 3000 BDT..."
+        (keyup.enter)="onSend(chatInput.value); chatInput.value = ''"
+        [disabled]="isLoading()"
+      />
+      <button
+        class="send-pill"
+        (click)="onSend(chatInput.value); chatInput.value = ''"
+        [disabled]="isLoading() || !chatInput.value.trim()"
+        aria-label="Send message"
+      >
+        &#10148;
+      </button>
+    </div>
+  </div>
+</div>

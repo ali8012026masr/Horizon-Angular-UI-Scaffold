@@ -1,0 +1,92 @@
+<h2 class="h4 mb-3">Browse Available Services</h2>
+
+@if (cartNotice(); as notice) {
+  <div class="alert py-2" [class.alert-success]="notice.ok" [class.alert-warning]="!notice.ok">
+    {{ notice.text }}
+  </div>
+}
+
+<form [formGroup]="filterForm" class="card card-body mb-3">
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label class="form-label">Category</label>
+      <select class="form-select" formControlName="category">
+        <option value="">All categories</option>
+        @for (category of categories; track category.value) {
+          <option [value]="category.value">{{ category.label }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Origin / Location</label>
+      <input class="form-control" formControlName="origin" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Destination</label>
+      <input class="form-control" formControlName="destination" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-control" formControlName="date" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Max Price (BDT)</label>
+      <input type="number" min="0" class="form-control" formControlName="maxPrice" />
+    </div>
+  </div>
+</form>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger">Failed to load slots: {{ error() }}</div>
+} @else if (slots().length === 0) {
+  <div class="alert alert-info">No slots match your filter.</div>
+} @else {
+  <div class="row g-3">
+    @for (slot of slots(); track slot.id) {
+      <div class="col-12 col-lg-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge text-bg-secondary">{{ categoryLabel(slot.category) }}</span>
+              <strong>{{ slot.price | number }} BDT</strong>
+            </div>
+            <h3 class="h6">
+              @if (slot.origin) {
+                {{ slot.origin }} -> {{ slot.destination }}
+              } @else {
+                {{ slot.locationName }}
+              }
+            </h3>
+            @if (slot.providerRatingCount > 0) {
+              <p class="small mb-1">
+                <span class="text-warning">★</span> {{ slot.providerRatingAvg | number: '1.1-1' }}
+                <span class="text-muted">({{ slot.providerRatingCount }} reviews)</span>
+              </p>
+            } @else {
+              <p class="small text-muted mb-1">No reviews yet</p>
+            }
+            @if (slot.endAt) {
+              <p class="text-muted mb-1 small">Check-out: {{ slot.endAt | date: 'mediumDate' }}</p>
+            }
+            <p class="text-muted mb-1">{{ slot.startAt | date: 'medium' }}</p>
+            <p class="small mb-3">Available seats: {{ slot.availableSeats }}/{{ slot.capacity }}</p>
+            <a class="btn btn-primary btn-sm" [routerLink]="['/tourist/slots', slot.id]">Select Service</a>
+            @if (slot.status === 'OPEN') {
+              @if (cart.has(slot.id)) {
+                <a class="btn btn-outline-success btn-sm ms-1" routerLink="/tourist/cart">In cart - view</a>
+              } @else {
+                <button class="btn btn-outline-primary btn-sm ms-1" type="button" (click)="addToCart(slot)">
+                  Add to Cart
+                </button>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

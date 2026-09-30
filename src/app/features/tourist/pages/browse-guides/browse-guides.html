@@ -1,0 +1,42 @@
+<h2 class="h4 mb-3">Browse Tour Guides by Location</h2>
+<form [formGroup]="filterForm" class="card card-body mb-3">
+  <div class="row g-3">
+    <div class="col-12 col-md-6">
+      <label class="form-label">Tourist Spot Location</label>
+      <input class="form-control" formControlName="location" placeholder="e.g., Cox's Bazar" />
+    </div>
+  </div>
+</form>
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (guides().length === 0) {
+  <div class="alert alert-info">No guides found for this location.</div>
+} @else {
+  <div class="row g-3">
+    @for (guide of guides(); track guide.id) {
+      <div class="col-12 col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="h6 mb-1">{{ guide.tourGuideName }}</h3>
+            <p class="small text-muted mb-2">{{ guide.location }}</p>
+            @if (guide.tourGuideRatingCount > 0) {
+              <p class="small mb-2">
+                <span class="text-warning">★</span> {{ guide.tourGuideRatingAvg | number: '1.1-1' }}
+                <span class="text-muted">({{ guide.tourGuideRatingCount }} reviews)</span>
+              </p>
+            } @else {
+              <p class="small text-muted mb-2">No reviews yet</p>
+            }
+            <span class="badge text-bg-warning mb-3">{{ guide.date }}, {{ guide.startTime }}-{{ guide.endTime }}</span>
+            <div>
+              <a class="btn btn-sm btn-primary" [routerLink]="['/tourist/guides', guide.tourGuideId]">View Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

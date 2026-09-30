@@ -1,0 +1,44 @@
+<h2 class="h4 mb-3">Booking Requests</h2>
+@if (loading()) {
+  <div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (requests().length === 0) {
+  <div class="alert alert-info">No booking requests found yet.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Tourist ID</th>
+          <th>Schedule</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (request of requests(); track request.id) {
+          <tr>
+            <td>{{ request.tourist }}</td>
+            <td>{{ request.scheduledDate | date: 'medium' }}</td>
+            <td>৳{{ request.amount }}</td>
+            <td>
+              <span class="badge" [class]="'text-bg-' + (request.status === 'Accepted' ? 'success' : request.status === 'Declined' ? 'danger' : 'warning')">{{ request.status }}</span>
+            </td>
+            <td>
+              @if (request.status === 'Pending') {
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-success" type="button" (click)="accept(request.id)">Accept</button>
+                  <button class="btn btn-outline-danger" type="button" (click)="decline(request.id)">Decline</button>
+                </div>
+              } @else {
+                <span class="text-muted">No actions</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

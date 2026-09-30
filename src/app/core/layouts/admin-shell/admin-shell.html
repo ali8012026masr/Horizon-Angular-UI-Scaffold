@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/admin/dashboard">System Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="adminNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/pending-registrations" routerLinkActive="active">Pending Registrations</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/role-management" routerLinkActive="active">Role Management</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/commission" routerLinkActive="active">Commission</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/ledger" routerLinkActive="active">Ledger</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/reports" routerLinkActive="active">Reports</a></li>
+      </ul>
+      <span class="navbar-text text-white-50 me-3 d-none d-md-inline">{{ user().name }}</span>
+      <a class="btn btn-outline-light btn-sm" routerLink="/admin/logout">Logout</a>
+    </div>
+  </div>
+</nav>
+<main class="container py-4">
+  <router-outlet />
+</main>

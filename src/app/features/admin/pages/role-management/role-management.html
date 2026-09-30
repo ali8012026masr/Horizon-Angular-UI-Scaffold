@@ -1,0 +1,49 @@
+<h2 class="h4 mb-3">Role Management</h2>
+@if (loading()) {
+  <div class="spinner-border text-dark" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (users().length === 0) {
+  <div class="alert alert-info">No users available for role management.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.id) {
+          <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <span
+                class="badge"
+                [class.text-bg-success]="user.status === 'Active'"
+                [class.text-bg-warning]="user.status === 'Suspended'"
+                [class.text-bg-danger]="user.status === 'Revoked'"
+                [class.text-dark]="user.status === 'Suspended'"
+              >
+                {{ user.status }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" type="button" (click)="updateStatus(user.id, 'Active')">Activate</button>
+                <button class="btn btn-outline-warning" type="button" (click)="updateStatus(user.id, 'Suspended')">Suspend</button>
+                <button class="btn btn-outline-danger" type="button" (click)="updateStatus(user.id, 'Revoked')">Revoke</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

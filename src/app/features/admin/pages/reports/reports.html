@@ -1,0 +1,24 @@
+<h2 class="h4 mb-3">Reports</h2>
+@if (loading()) {
+  <div class="spinner-border text-dark" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (summary().length === 0) {
+  <div class="alert alert-info">No report data available.</div>
+} @else {
+  <div class="row g-3">
+    @for (item of summary(); track item.name) {
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="h6 mb-2">{{ item.name }}</h3>
+            <p class="display-6 mb-2">{{ item.value }}</p>
+            @if (item.note) {
+              <p class="small text-muted mb-0">{{ item.note }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

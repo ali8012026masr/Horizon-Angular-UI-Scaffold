@@ -1,0 +1,53 @@
+<h2 class="h4 mb-3">Booking + Payment</h2>
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (slot(); as slot) {
+  <div class="row g-3">
+    <div class="col-12 col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="h6">Selected Service</h3>
+          <p class="mb-1">{{ slot.origin }} -> {{ slot.destination }}</p>
+          <p class="mb-1">{{ slot.startAt | date: 'medium' }}</p>
+          <p class="mb-0 fw-semibold">{{ slot.price | number }} BDT</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-7">
+      <form [formGroup]="paymentForm" (ngSubmit)="pay()" class="card card-body">
+        <div class="mb-3">
+          <label class="form-label">Payment method</label>
+          <select class="form-select" formControlName="method">
+            <option value="CARD">Card</option>
+            <option value="MOBILE_BANKING">Mobile Banking</option>
+            <option value="CASH">Cash</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Card/Wallet Number</label>
+          <input class="form-control" formControlName="cardNumber" [class.is-invalid]="paymentForm.controls.cardNumber.touched && paymentForm.controls.cardNumber.invalid" />
+          <div class="invalid-feedback">Use exactly 16 digits.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">CVV / PIN</label>
+          <input class="form-control" formControlName="cvv" [class.is-invalid]="paymentForm.controls.cvv.touched && paymentForm.controls.cvv.invalid" />
+          <div class="invalid-feedback">Use exactly 3 digits.</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Pay Now</button>
+      </form>
+      @if (paymentState() === 'success') {
+        <div class="alert alert-success mt-3">
+          Payment successful. Redirecting to itinerary...
+        </div>
+      }
+      @if (paymentState() === 'failed') {
+        <div class="alert alert-danger mt-3">
+          Payment failed. Retry or choose another method.
+        </div>
+      }
+    </div>
+  </div>
+}

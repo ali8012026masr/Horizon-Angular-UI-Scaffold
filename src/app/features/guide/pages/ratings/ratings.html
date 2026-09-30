@@ -1,0 +1,23 @@
+<h2 class="h4 mb-3">Ratings Received</h2>
+@if (loading()) {
+  <div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (ratings().length === 0) {
+  <div class="alert alert-info">No ratings have been submitted yet.</div>
+} @else {
+  <div class="list-group">
+    @for (rating of ratings(); track rating.id) {
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <h3 class="h6 mb-1">{{ rating.tourist }}</h3>
+            <small class="text-muted">{{ rating.receivedAt | date: 'mediumDate' }}</small>
+          </div>
+          <span class="badge text-bg-primary">{{ rating.score }}/5</span>
+        </div>
+        <p class="mb-0">{{ rating.comment }}</p>
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/guide/dashboard">Tour Guide</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guideNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="guideNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/dashboard" routerLinkActive="active">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/profile" routerLinkActive="active">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/schedule/post" routerLinkActive="active">Post Schedule</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/bookings" routerLinkActive="active">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/conduct" routerLinkActive="active">Conduct Tour</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guide/ratings" routerLinkActive="active">Ratings</a></li>
+      </ul>
+      <span class="navbar-text text-white-50 me-3 d-none d-md-inline">{{ user().name }}</span>
+      <a class="btn btn-outline-light btn-sm" routerLink="/guide/logout">Logout</a>
+    </div>
+  </div>
+</nav>
+<main class="container py-4">
+  <router-outlet />
+</main>

@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/"><h2><b>HORIZON</b></h2><h5>All-in-one Travel Solution</h5></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="landingNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" routerLink="/provider/register-business">Apply as Service Provider</a>
+        <a class="btn btn-outline-secondary" routerLink="/guide/apply">Join as Guide</a>
+        <a class="btn btn-outline-primary" routerLink="/auth">Login</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="landing-hero py-5">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-bold">Discover and book your next tour with Horizon</h1>
+        <p class="lead text-muted">Search available booking services by category, origin, and destination. Explore services from trusted providers across transport, hotels, and attractions.</p>
+      </div>
+      <div class="col-lg-5">
+        <div class="card shadow-sm hero-card hover-lift p-4">
+          <h2 class="h5 mb-3">Find your next booking</h2>
+          <form [formGroup]="searchForm" (ngSubmit)="search()" class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Category</label>
+              <select class="form-select" formControlName="category">
+                <option value="" disabled selected>Select category</option>
+                @for (category of categories; track category.value) {
+                  <option [value]="category.value">{{ category.label }}</option>
+                }
+              </select>
+              @if (searchForm.controls.category.invalid && searchForm.controls.category.touched) {
+                <div class="invalid-feedback d-block">Choose a category to continue.</div>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Origin / Location</label>
+              <input class="form-control" formControlName="origin" placeholder="Dhaka" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Destination</label>
+              <input class="form-control" formControlName="destination" placeholder="Cox's Bazar" />
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-primary flex-grow-1" type="submit">Search availability</button>
+              <button class="btn btn-outline-secondary flex-grow-1" type="button" (click)="resetSearch()">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container pb-5">
+  <div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="h4 mb-1">Available booking services</h2>
+        <p class="text-muted mb-0">Services created by service providers are visible here. Login to book any service.</p>
+      </div>
+      <a class="btn btn-outline-primary" routerLink="/auth">Login to book</a>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading services...</span></div>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  } @else if (filteredSlots().length === 0) {
+    <div class="alert alert-info">No booking services match your search criteria. Try another category or location.</div>
+  } @else {
+    <div class="row g-4">
+      @for (slot of filteredSlots(); track slot.id) {
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm hover-lift">
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <span class="badge text-bg-secondary">{{ categoryLabel(slot.category) }}</span>
+                <span class="text-muted small">{{ slot.providerName }}</span>
+              </div>
+              <h3 class="h5">
+                @if (slot.origin) {
+                  {{ slot.origin }} → {{ slot.destination }}
+                } @else {
+                  {{ slot.locationName }}
+                }
+              </h3>
+              <p class="mb-2 text-muted">Starts {{ slot.startAt | date: 'mediumDate' }}</p>
+              @if (slot.endAt) {
+                <p class="mb-2 text-muted">Ends {{ slot.endAt | date: 'mediumDate' }}</p>
+              }
+              <p class="mb-0">Available: <strong>{{ slot.availableSeats }}</strong>/{{ slot.capacity }}</p>
+              <div class="mt-auto pt-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="fs-5 fw-semibold">৳{{ slot.price }}</span>
+                  <a class="btn btn-sm btn-primary" routerLink="/auth">Book now</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

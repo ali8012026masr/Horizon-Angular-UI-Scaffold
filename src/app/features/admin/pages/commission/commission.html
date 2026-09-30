@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">Commission Calculation</h2>
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-primary" type="button" (click)="exportExcel()">Export Excel</button>
+    <button class="btn btn-primary" type="button" (click)="exportPdf()">Export PDF</button>
+  </div>
+</div>
+@if (loading()) {
+  <div class="spinner-border text-dark" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (rows().length === 0) {
+  <div class="alert alert-info">No commission transactions available.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Rate</th>
+          <th>Commission</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.id) {
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.serviceCategory }}</td>
+            <td>{{ row.transactionDate | date: 'mediumDate' }}</td>
+            <td>৳{{ row.amount }}</td>
+            <td>{{ row.commissionPercent }}%</td>
+            <td>৳{{ row.commissionAmount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

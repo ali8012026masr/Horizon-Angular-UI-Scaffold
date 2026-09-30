@@ -1,0 +1,41 @@
+<section class="hero bg-primary text-white py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-6 fw-bold">Discover and Book Local Travel Services</h1>
+        <p class="lead mb-3">Search buses, hotels, boats, guides and more — all in one place. Fast booking and secure payments.</p>
+        <div class="d-flex gap-2">
+          <a class="btn btn-light btn-lg" routerLink="/tourist/slots">Browse Slots</a>
+          <a class="btn btn-outline-light btn-lg" routerLink="/auth">Sign in</a>
+        </div>
+      </div>
+      <div class="col-md-5 d-none d-md-block">
+        <div class="card bg-white text-dark shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Quick search</h5>
+            <form class="row g-2">
+              <div class="col-12">
+                <select class="form-select">
+                  <option>Category: All</option>
+                  <option>Bus</option>
+                  <option>Hotel</option>
+                  <option>Launch</option>
+                  <option>Guide</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <input class="form-control" placeholder="Origin" />
+              </div>
+              <div class="col-6">
+                <input class="form-control" placeholder="Destination" />
+              </div>
+              <div class="col-12 d-grid">
+                <a class="btn btn-primary" routerLink="/tourist/slots">Search</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

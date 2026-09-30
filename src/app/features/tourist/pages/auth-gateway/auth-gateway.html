@@ -1,0 +1,92 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h4 mb-3">Tourist Login / Register</h2>
+        <div class="btn-group mb-4" role="group" aria-label="existing user toggle">
+          <button
+            class="btn"
+            [class.btn-primary]="isExistingUser()"
+            [class.btn-outline-primary]="!isExistingUser()"
+            (click)="setMode(true)"
+            type="button"
+          >
+            Existing User
+          </button>
+          <button
+            class="btn"
+            [class.btn-primary]="!isExistingUser()"
+            [class.btn-outline-primary]="isExistingUser()"
+            (click)="setMode(false)"
+            type="button"
+          >
+            New User
+          </button>
+        </div>
+
+        @if (!isExistingUser()) {
+          <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" novalidate class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full name</label>
+              <input class="form-control" formControlName="fullName" [class.is-invalid]="registerForm.controls.fullName.touched && registerForm.controls.fullName.invalid" />
+              <div class="invalid-feedback">Name is required (min 3 chars).</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input class="form-control" formControlName="email" [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid" />
+              <div class="invalid-feedback">Enter a valid email.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input class="form-control" formControlName="phone" [class.is-invalid]="registerForm.controls.phone.touched && registerForm.controls.phone.invalid" />
+              <div class="invalid-feedback">Enter 11 digits.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" formControlName="password" [class.is-invalid]="registerForm.controls.password.touched && registerForm.controls.password.invalid" />
+              <div class="invalid-feedback">Password must be at least 6 chars.</div>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary" type="submit">Register Account</button>
+            </div>
+          </form>
+          @if (verificationState() === 'success') {
+            <div class="alert alert-success mt-3">
+              Account verification successful. Please login.
+            </div>
+          }
+          @if (verificationState() === 'failed') {
+            <div class="alert alert-danger mt-3">
+              Account verification failed. Contact support.
+            </div>
+          }
+        } @else {
+          <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" novalidate class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input class="form-control" formControlName="email" [class.is-invalid]="loginForm.controls.email.touched && loginForm.controls.email.invalid" />
+              <div class="invalid-feedback">Enter a valid email.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" formControlName="password" [class.is-invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid" />
+              <div class="invalid-feedback">Password is required.</div>
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-primary" type="submit">Login</button>
+              <a class="btn btn-outline-secondary" routerLink="/">Back</a>
+            </div>
+            <div class="col-12">
+              <a routerLink="/forgot-password" class="small">Forgot password?</a>
+            </div>
+          </form>
+          @if (loginFailed()) {
+            <div class="alert alert-warning mt-3">
+              Credentials invalid. Use password <code>password123</code> in this mock flow.
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

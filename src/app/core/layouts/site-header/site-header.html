@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2 brand-shell" routerLink="/">
+      <img src="/assets/Horizon_logo.png" alt="H" class="brand-logo img-fluid" />
+      <!-- <span class="brand-text fw-bold d-none d-sm-inline">Horizon</span> -->
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/browse">Browse</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/browse">Explore</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/bus">Bus</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/hotels">Hotels</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/guides">Guides</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/attractions">Attractions</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/others">Others</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center">
+        <div class="position-relative me-2">
+          <button class="btn btn-outline-secondary position-relative" type="button" (click)="togglePanel()">
+            <i class="bi bi-bell"></i>
+            @if (unreadCount() > 0) {
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ unreadCount() }}
+              </span>
+            }
+          </button>
+          @if (panelOpen()) {
+            <div class="notification-panel card shadow position-absolute end-0 mt-2">
+              <div class="card-body p-0">
+                @if (loadingNotifications()) {
+                  <div class="p-3 text-center text-muted small">Loading...</div>
+                } @else if (notifications().length === 0) {
+                  <div class="p-3 text-center text-muted small">No notifications yet.</div>
+                } @else {
+                  <ul class="list-group list-group-flush">
+                    @for (notification of notifications(); track notification.id) {
+                      <li
+                        class="list-group-item small"
+                        [class.fw-bold]="!notification.read"
+                        [class.bg-light]="!notification.read"
+                        style="cursor: pointer"
+                        (click)="select(notification)"
+                      >
+                        {{ notification.message }}
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

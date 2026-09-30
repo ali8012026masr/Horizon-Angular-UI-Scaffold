@@ -1,0 +1,72 @@
+<h2 class="h4 mb-3">My Booked Services</h2>
+<p class="text-muted">All services booked so far for your tour.</p>
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (rows().length === 0) {
+  <div class="alert alert-info">You have not booked any services yet.</div>
+} @else {
+  @if (success()) {
+    <div class="alert alert-success">{{ success() }}</div>
+  }
+
+  @if (invoiceError()) {
+    <div class="alert alert-danger">{{ invoiceError() }}</div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <span>
+      Confirmed total: <strong>৳{{ confirmedTotal() | number }}</strong>
+      ({{ confirmedRows().length }} services)
+    </span>
+    <button
+      class="btn btn-primary btn-sm"
+      type="button"
+      (click)="downloadInvoice()"
+    >
+      Download Invoice (PDF)
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Category</th>
+          <th>Service</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Booked At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.id) {
+          <tr>
+            <td>{{ row.id }}</td>
+            <td><span class="badge text-bg-primary text-white border border-primary-subtle">{{ row.category ? categoryLabel(row.category) : 'Guide' }}</span></td>
+            <td>{{ row.slotTitle }}</td>
+            <td>৳{{ row.amount | number }}</td>
+            <td><span class="badge text-bg-warning text-dark border border-warning-subtle">{{ row.status }}</span></td>
+            <td>{{ row.bookedAt | date: 'medium' }}</td>
+            <td>
+              @if (isConfirmed(row)) {
+                <button class="btn btn-outline-primary btn-sm me-1" type="button" (click)="downloadInvoice(row)">Invoice</button>
+              }
+              @if (canCancel(row)) {
+                <button class="btn btn-outline-danger btn-sm" type="button" (click)="cancelBooking(row)">Cancel</button>
+              } @else if (!isConfirmed(row)) {
+                <span class="text-muted small">-</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<a class="btn btn-outline-primary" routerLink="/tourist/dashboard">Back to Dashboard</a>

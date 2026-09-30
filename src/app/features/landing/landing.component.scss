@@ -1,0 +1,38 @@
+.landing-hero {
+  background:
+    linear-gradient(110deg, rgba(220, 239, 227, 0.96), rgba(201, 230, 211, 0.92)),
+    url("/assets/Horizon_logo.jpg") center / cover;
+  color: var(--horizon-ink);
+  padding-bottom: 72px !important;
+  padding-top: 72px !important;
+}
+
+.landing-hero h1 { color: var(--horizon-ink); }
+.landing-hero .lead { color: #000000 !important; max-width: 640px; }
+
+.hero-card {
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--horizon-shadow);
+}
+
+.landing-hero + section { padding-top: 48px; }
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 767px) {
+  .landing-hero {
+    text-align: center;
+    padding-bottom: 48px !important;
+    padding-top: 48px !important;
+  }
+
+  .landing-hero .lead { margin-inline: auto; }
+}

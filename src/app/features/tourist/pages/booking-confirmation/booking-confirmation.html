@@ -1,0 +1,34 @@
+<h2 class="h4 mb-3">Booking Confirmation & Itinerary</h2>
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (bookings().length === 0) {
+  <div class="alert alert-info">No confirmed bookings yet.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Service</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Booked At</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (booking of bookings(); track booking.id) {
+          <tr>
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.slotTitle }}</td>
+            <td>{{ booking.amount | currency: 'BDT ' }}</td>
+            <td><span class="badge text-bg-primary">{{ booking.status }}</span></td>
+            <td>{{ booking.bookedAt | date: 'medium' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+<a class="btn btn-outline-primary" routerLink="/tourist/dashboard">Back to Dashboard</a>

@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/provider/dashboard">Provider Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#providerNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="providerNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/dashboard" routerLinkActive="active">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/profile" routerLinkActive="active">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/slots/category" routerLinkActive="active">Create Service</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/slots/manage" routerLinkActive="active">My Services</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/bookings/list" routerLinkActive="active">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/payments/table" routerLinkActive="active">Payments</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/provider/ledger" routerLinkActive="active">Ledger</a></li>
+      </ul>
+      <a class="btn btn-outline-light btn-sm" routerLink="/provider/logout">Logout</a>
+    </div>
+  </div>
+</nav>
+<main class="container py-4">
+  <router-outlet />
+</main>

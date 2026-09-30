@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/tourist/dashboard">Horizon Tourist</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#touristNav"
+      aria-controls="touristNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="touristNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li>
+          <a class="nav-link" routerLink="/tourist/profile" routerLinkActive="active">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/slots" routerLinkActive="active">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/cart" routerLinkActive="active">
+            Cart
+            @if (cart.count() > 0) {
+              <span class="badge text-bg-light">{{ cart.count() }}</span>
+            }
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/guides" routerLinkActive="active">Guides</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/group/create" routerLinkActive="active">Create Group</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/group/my" routerLinkActive="active">My Groups</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/group/join" routerLinkActive="active">Join Group</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/bookings" routerLinkActive="active">My Bookings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/tourist/tracking/live" routerLinkActive="active">Tracking</a>
+        </li>
+      </ul>
+      <a class="nav-link text-white-50 me-3" routerLink="/tourist/profile" routerLinkActive="active">
+        {{ user().name }}
+      </a>
+      <a class="btn btn-outline-light btn-sm" routerLink="/tourist/logout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+  <router-outlet />
+</main>
+
+<app-ai-concierge />

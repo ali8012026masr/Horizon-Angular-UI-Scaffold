@@ -1,0 +1,36 @@
+<h2 class="h4 mb-3">Bookings List</h2>
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (rows().length === 0) {
+  <div class="alert alert-info">No bookings matched posted services.</div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Category</th>
+          <th>Service</th>
+          <th>Status</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.id) {
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.touristId }}</td>
+            <td>{{ row.category ? categoryLabel(row.category) : '-' }}</td>
+            <td>{{ row.slot }}</td>
+            <td><span class="badge text-bg-secondary">{{ row.status }}</span></td>
+            <td>{{ row.amount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+<a class="btn btn-primary" routerLink="/provider/bookings/status">Update Booking Status</a>

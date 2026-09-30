@@ -1,0 +1,18 @@
+:host { display: block; }
+
+footer {
+  background: var(--horizon-dark-surface) !important;
+  color: var(--horizon-ink);
+  font-size: 14px;
+  margin-top: 0 !important;
+  padding-top: 40px !important;
+}
+
+footer a {
+  color: var(--horizon-ink);
+  transition: color 150ms ease;
+}
+
+footer a:hover { color: var(--horizon-brand); }
+footer h6 { color: var(--horizon-ink) !important; }
+footer .border-top { border-color: #b8d8c2 !important; }

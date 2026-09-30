@@ -1,0 +1,27 @@
+<h2 class="h4 mb-3">Guide Profile</h2>
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (guide()) {
+  <div class="card">
+    <div class="card-body">
+      <h3 class="h5">{{ guide()!.profile.fullName }}</h3>
+      <p class="mb-1"><strong>Location:</strong> {{ guide()!.profile.location }}</p>
+      <p class="mb-1"><strong>Price:</strong> {{ guide()!.profile.defaultPrice | number }} BDT</p>
+      <p class="mb-3">
+        <strong>Price mode:</strong>
+        {{ guide()!.profile.negotiable ? 'Negotiable' : 'Fixed' }}
+      </p>
+      @if (guide()!.nextAvailability) {
+        <p class="mb-3">
+          <strong>Next available:</strong>
+          {{ guide()!.nextAvailability!.date }}, {{ guide()!.nextAvailability!.startTime }}-{{ guide()!.nextAvailability!.endTime }}
+        </p>
+      }
+      <a class="btn btn-primary" [routerLink]="['/tourist/guides/request', guide()!.profile.id]">
+        Request Booking (Pay Later)
+      </a>
+    </div>
+  </div>
+}

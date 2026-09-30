@@ -1,0 +1,175 @@
+<h2 class="h4 mb-3">My Profile</h2>
+
+@if (loading()) {
+  <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error() && !profile()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (profile()) {
+  <div class="card">
+    <div class="card-body">
+      @if (success()) {
+        <div class="alert alert-success">{{ success() }}</div>
+      }
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" [value]="profile()!.email" disabled />
+      </div>
+
+      @if (!editing()) {
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input class="form-control" [value]="profile()!.fullName" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input class="form-control" [value]="profile()!.phone || '-'" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Address</label>
+            <input class="form-control" [value]="profile()!.address || '-'" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Location</label>
+            <input class="form-control" [value]="profile()!.location || '-'" disabled />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Bio</label>
+            <textarea class="form-control" rows="2" disabled>{{ profile()!.bio || '-' }}</textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Languages</label>
+            <input class="form-control" [value]="profile()!.languages.join(', ') || '-'" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Experience (years)</label>
+            <input class="form-control" [value]="profile()!.experienceYears" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Default Price</label>
+            <input class="form-control" [value]="profile()!.defaultPrice" disabled />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Verification Status</label>
+            <input class="form-control" [value]="profile()!.verificationStatus" disabled />
+          </div>
+          <div class="col-md-6">
+            <div class="form-check mt-4">
+              <input class="form-check-input" type="checkbox" [checked]="profile()!.isAvailable" disabled />
+              <label class="form-check-label">Currently available</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check mt-4">
+              <input class="form-check-input" type="checkbox" [checked]="profile()!.negotiable" disabled />
+              <label class="form-check-label">Price negotiable</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-primary" type="button" (click)="startEdit()">Edit Profile</button>
+          <button class="btn btn-outline-danger" type="button" (click)="deleteAccount()" [disabled]="deleting()">
+            @if (deleting()) { Deleting... } @else { Delete Account }
+          </button>
+        </div>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              <input class="form-control" formControlName="fullName" [class.is-invalid]="form.controls.fullName.touched && form.controls.fullName.invalid" />
+              <div class="invalid-feedback">Full name is required.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input class="form-control" formControlName="phone" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Address</label>
+              <input class="form-control" formControlName="address" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Location</label>
+              <input class="form-control" formControlName="location" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Bio</label>
+              <textarea class="form-control" rows="2" formControlName="bio"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Languages</label>
+              <input class="form-control" placeholder="e.g., English, Spanish" formControlName="languages" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Experience (years)</label>
+              <input class="form-control" type="number" formControlName="experienceYears" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Default Price</label>
+              <input class="form-control" type="number" formControlName="defaultPrice" />
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="isAvailable" id="guideIsAvailable" />
+                <label class="form-check-label" for="guideIsAvailable">Currently available</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="negotiable" id="guideNegotiable" />
+                <label class="form-check-label" for="guideNegotiable">Price negotiable</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-3">
+            <button class="btn btn-primary" type="submit" [disabled]="saving()">
+              @if (saving()) { Saving... } @else { Save }
+            </button>
+            <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <h3 class="h6 mb-3">Change Password</h3>
+      @if (passwordSuccess()) {
+        <div class="alert alert-success">{{ passwordSuccess() }}</div>
+      }
+      @if (passwordError()) {
+        <div class="alert alert-danger">{{ passwordError() }}</div>
+      }
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Current Password</label>
+            <input class="form-control" type="password" formControlName="currentPassword" [class.is-invalid]="passwordForm.controls.currentPassword.touched && passwordForm.controls.currentPassword.invalid" />
+            <div class="invalid-feedback">Current password is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">New Password</label>
+            <input class="form-control" type="password" formControlName="newPassword" [class.is-invalid]="passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.invalid" />
+            <div class="invalid-feedback">New password must be at least 6 characters.</div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Confirm New Password</label>
+            <input class="form-control" type="password" formControlName="confirmPassword" [class.is-invalid]="passwordForm.controls.confirmPassword.touched && passwordForm.controls.confirmPassword.invalid" />
+            <div class="invalid-feedback">Confirm your new password.</div>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-3" type="submit" [disabled]="changingPassword()">
+          @if (changingPassword()) { Changing... } @else { Change Password }
+        </button>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,22 @@
+<h2 class="h4 mb-3">Create Group for Shared Booking</h2>
+<form [formGroup]="form" (ngSubmit)="create()" class="card card-body">
+  <div class="mb-3">
+    <label class="form-label">Group Name</label>
+    <input class="form-control" formControlName="groupName" [class.is-invalid]="form.controls.groupName.touched && form.controls.groupName.invalid" />
+    <div class="invalid-feedback">Group name is required.</div>
+  </div>
+  <button class="btn btn-primary" type="submit">Create Group</button>
+  @if (error()) {
+    <div class="alert alert-danger mt-3 mb-0">{{ error() }}</div>
+  }
+</form>
+@if (created()) {
+  <div class="alert alert-success mt-3">
+    Group created. Share this join code with your tour mates: <strong>{{ joinCode() }}</strong>
+    <div class="mt-2 d-flex gap-3">
+      <a [routerLink]="['/tourist/group/booking']" [queryParams]="{ groupId: groupId() }" class="alert-link">Book shared transport</a>
+      <a [routerLink]="['/tourist/group/join']" [queryParams]="{ groupId: groupId() }" class="alert-link">Go to group & split payment</a>
+      <a routerLink="/tourist/group/my" class="alert-link">My Groups (find this code later)</a>
+    </div>
+  </div>
+}

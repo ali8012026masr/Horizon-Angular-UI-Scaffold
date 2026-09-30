@@ -1,0 +1,67 @@
+<h2 class="h4 mb-3">Post Free Schedule & Location</h2>
+<form [formGroup]="form" (ngSubmit)="submit()" class="row g-3">
+  <div class="col-12 col-md-6">
+    <label class="form-label">Primary Location</label>
+    <input class="form-control" formControlName="location" />
+    @if (form.controls.location.invalid && form.controls.location.touched) {
+      <div class="invalid-feedback d-block">Add a primary tour location.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Spot Name</label>
+    <input class="form-control" formControlName="spot" />
+    @if (form.controls.spot.invalid && form.controls.spot.touched) {
+      <div class="invalid-feedback d-block">Provide a spot or route name.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Date</label>
+    <input class="form-control" type="date" formControlName="date" />
+    @if (form.controls.date.invalid && form.controls.date.touched) {
+      <div class="invalid-feedback d-block">Pick a date for the guided tour.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Start Time</label>
+    <input class="form-control" type="time" formControlName="time" />
+    @if (form.controls.time.invalid && form.controls.time.touched) {
+      <div class="invalid-feedback d-block">Add a start time.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">End Time</label>
+    <input class="form-control" type="time" formControlName="endTime" />
+    @if (form.controls.endTime.invalid && form.controls.endTime.touched) {
+      <div class="invalid-feedback d-block">Add an end time.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Price (BDT)</label>
+    <input class="form-control" type="number" formControlName="price" />
+    @if (form.controls.price.invalid && form.controls.price.touched) {
+      <div class="invalid-feedback d-block">Provide a minimum tour price.</div>
+    }
+  </div>
+
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" formControlName="negotiable" id="negotiable" />
+      <label class="form-check-label" for="negotiable">Price negotiable</label>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex gap-2 align-items-center">
+    <button class="btn btn-primary" type="submit">Publish Schedule</button>
+    @if (posted()) {
+      <span class="text-success">Schedule posted. You will see it on the dashboard shortly.</span>
+    }
+    @if (error()) {
+      <span class="text-danger">{{ error() }}</span>
+    }
+  </div>
+</form>

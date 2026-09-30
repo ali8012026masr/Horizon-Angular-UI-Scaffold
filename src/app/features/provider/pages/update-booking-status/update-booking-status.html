@@ -1,0 +1,87 @@
+<div class="booking-status-page">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h2 class="h4 mb-1">Update Booking Status</h2>
+      <p class="text-muted mb-0">Keep guest bookings aligned with your service progress.</p>
+    </div>
+    <a class="btn btn-outline-secondary" routerLink="/provider/bookings/list">Back to bookings</a>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  } @else if (bookings().length === 0) {
+    <div class="alert alert-info">No bookings are available for status updates.</div>
+  } @else {
+    @if (success()) {
+      <div class="alert alert-success">{{ success() }}</div>
+    }
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Booking</th>
+            <th>Tourist</th>
+            <th>Service</th>
+            <th>Category</th>
+            <th>Schedule</th>
+            <th>Amount</th>
+            <th>Current status</th>
+            <th>Update status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (booking of bookings(); track booking.id) {
+            <tr>
+              <td>
+                <div class="fw-semibold">{{ booking.id }}</div>
+                <small class="text-muted">Booked {{ booking.bookedAt | date: 'mediumDate' }}</small>
+              </td>
+              <td>{{ booking.touristId }}</td>
+              <td>{{ booking.slotTitle }}</td>
+              <td>{{ booking.categoryLabel }}</td>
+              <td>{{ booking.startAt | date: 'medium' }}</td>
+              <td>{{ booking.amount | currency: 'USD' }}</td>
+              <td>
+                <span class="badge text-bg-light text-dark">{{ getStatusLabel(booking.status) }}</span>
+              </td>
+              <td>
+                <select
+                  class="form-select form-select-sm"
+                  [ngModel]="selectedStatusFor(booking.id)"
+                  (ngModelChange)="updateSelectedStatus(booking.id, $event)"
+                  [name]="'status-' + booking.id"
+                >
+                  @for (status of statusOptions; track status) {
+                    <option [ngValue]="status">{{ getStatusLabel(status) }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  [disabled]="saving() || selectedStatusFor(booking.id) === booking.status"
+                  (click)="updateStatus(booking.id)"
+                >
+                  @if (saving() && savingBookingId() === booking.id) {
+                    Updating...
+                  } @else {
+                    Save
+                  }
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

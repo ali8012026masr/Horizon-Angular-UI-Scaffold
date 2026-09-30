@@ -1,0 +1,191 @@
+<h2 class="h4 mb-3">Enter Service Details</h2>
+<form [formGroup]="form" (ngSubmit)="publish()" class="card card-body">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Service Category</label>
+      <select class="form-select" formControlName="category" (change)="onCategoryChange()">
+        @for (cat of categories; track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <hr class="my-3" />
+
+  @if (formType() === 'transport') {
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Origin</label>
+        <input class="form-control" formControlName="origin" [class.is-invalid]="form.controls.origin.touched && form.controls.origin.invalid" />
+        <div class="invalid-feedback">Origin required.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Destination</label>
+        <input class="form-control" formControlName="destination" [class.is-invalid]="form.controls.destination.touched && form.controls.destination.invalid" />
+        <div class="invalid-feedback">Destination required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Departure Date</label>
+        <input type="date" class="form-control" formControlName="startDate" [class.is-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid" />
+        <div class="invalid-feedback">Date required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Departure Time</label>
+        <input type="time" class="form-control" formControlName="startTime" [class.is-invalid]="form.controls.startTime.touched && form.controls.startTime.invalid" />
+        <div class="invalid-feedback">Time required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Seat Capacity</label>
+        <input type="number" class="form-control" formControlName="capacity" [class.is-invalid]="form.controls.capacity.touched && form.controls.capacity.invalid" />
+        <div class="invalid-feedback">1-500.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Price per Seat</label>
+        <input type="number" class="form-control" formControlName="price" [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid" />
+        <div class="invalid-feedback">Price required.</div>
+      </div>
+    </div>
+  } @else if (formType() === 'stay') {
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input class="form-control" formControlName="origin" [class.is-invalid]="form.controls.origin.touched && form.controls.origin.invalid" />
+        <div class="invalid-feedback">Location required.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Property Name</label>
+        <input class="form-control" formControlName="venueName" [class.is-invalid]="form.controls.venueName.touched && form.controls.venueName.invalid" />
+        <div class="invalid-feedback">Property name required.</div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Check-in Date</label>
+        <input type="date" class="form-control" formControlName="startDate" [class.is-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid" />
+        <div class="invalid-feedback">Check-in date required.</div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Check-out Date</label>
+        <input type="date" class="form-control" formControlName="endDate" [class.is-invalid]="form.controls.endDate.touched && form.controls.endDate.invalid" />
+        <div class="invalid-feedback">Check-out date required.</div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Rooms Available</label>
+        <input type="number" class="form-control" formControlName="capacity" [class.is-invalid]="form.controls.capacity.touched && form.controls.capacity.invalid" />
+        <div class="invalid-feedback">1-500.</div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Price per Night</label>
+        <input type="number" class="form-control" formControlName="price" [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid" />
+        <div class="invalid-feedback">Price required.</div>
+      </div>
+    </div>
+  } @else if (formType() === 'venue') {
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Venue Name</label>
+        <input class="form-control" formControlName="venueName" [class.is-invalid]="form.controls.venueName.touched && form.controls.venueName.invalid" />
+        <div class="invalid-feedback">Venue name required.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input class="form-control" formControlName="origin" [class.is-invalid]="form.controls.origin.touched && form.controls.origin.invalid" />
+        <div class="invalid-feedback">Location required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Event Date</label>
+        <input type="date" class="form-control" formControlName="startDate" [class.is-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid" />
+        <div class="invalid-feedback">Date required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Event Time</label>
+        <input type="time" class="form-control" formControlName="startTime" [class.is-invalid]="form.controls.startTime.touched && form.controls.startTime.invalid" />
+        <div class="invalid-feedback">Time required.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Hall Capacity</label>
+        <input type="number" class="form-control" formControlName="capacity" [class.is-invalid]="form.controls.capacity.touched && form.controls.capacity.invalid" />
+        <div class="invalid-feedback">1-500.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Rental Price</label>
+        <input type="number" class="form-control" formControlName="price" [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid" />
+        <div class="invalid-feedback">Price required.</div>
+      </div>
+    </div>
+  } @else if (formType() === 'dining') {
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Restaurant Name</label>
+        <input class="form-control" formControlName="venueName" [class.is-invalid]="form.controls.venueName.touched && form.controls.venueName.invalid" />
+        <div class="invalid-feedback">Restaurant name required.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input class="form-control" formControlName="origin" [class.is-invalid]="form.controls.origin.touched && form.controls.origin.invalid" />
+        <div class="invalid-feedback">Location required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-control" formControlName="startDate" [class.is-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid" />
+        <div class="invalid-feedback">Date required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Seating Time</label>
+        <input type="time" class="form-control" formControlName="startTime" [class.is-invalid]="form.controls.startTime.touched && form.controls.startTime.invalid" />
+        <div class="invalid-feedback">Time required.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Seats Available</label>
+        <input type="number" class="form-control" formControlName="capacity" [class.is-invalid]="form.controls.capacity.touched && form.controls.capacity.invalid" />
+        <div class="invalid-feedback">1-500.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Price per Person</label>
+        <input type="number" class="form-control" formControlName="price" [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid" />
+        <div class="invalid-feedback">Price required.</div>
+      </div>
+    </div>
+  } @else {
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Park Name</label>
+        <input class="form-control" formControlName="venueName" [class.is-invalid]="form.controls.venueName.touched && form.controls.venueName.invalid" />
+        <div class="invalid-feedback">Park name required.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input class="form-control" formControlName="origin" [class.is-invalid]="form.controls.origin.touched && form.controls.origin.invalid" />
+        <div class="invalid-feedback">Location required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-control" formControlName="startDate" [class.is-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid" />
+        <div class="invalid-feedback">Date required.</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Opening Time</label>
+        <input type="time" class="form-control" formControlName="startTime" [class.is-invalid]="form.controls.startTime.touched && form.controls.startTime.invalid" />
+        <div class="invalid-feedback">Time required.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Daily Capacity</label>
+        <input type="number" class="form-control" formControlName="capacity" [class.is-invalid]="form.controls.capacity.touched && form.controls.capacity.invalid" />
+        <div class="invalid-feedback">1-500.</div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Ticket Price</label>
+        <input type="number" class="form-control" formControlName="price" [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid" />
+        <div class="invalid-feedback">Price required.</div>
+      </div>
+    </div>
+  }
+
+  <div class="col-12 mt-3">
+    <button class="btn btn-primary" type="submit">Publish Service</button>
+  </div>
+  @if (error()) {
+    <div class="col-12 mt-3">
+      <div class="alert alert-danger mb-0">{{ error() }}</div>
+    </div>
+  }
+</form>

@@ -1,0 +1,69 @@
+<section class="demo-page-shell">
+  <div class="container py-5">
+    <div class="hero-card card shadow-sm border-0">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+          <p class="eyebrow mb-2">{{ page.eyebrow }}</p>
+          <h1 class="display-6 fw-bold mb-3">{{ page.title }}</h1>
+          <p class="lead text-secondary mb-4">{{ page.summary }}</p>
+
+          <div class="d-flex flex-wrap gap-3">
+            <a class="btn btn-primary px-4" routerLink="/">Back to home</a>
+            <a class="btn btn-outline-primary px-4" routerLink="/browse">Browse services</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="preview-card">
+            <span class="badge">Demo</span>
+            <h3>Ready for the real build</h3>
+            <p>
+              This page is intentionally lightweight so the interface can be reviewed before the full feature is developed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+      @for (stat of page.stats; track stat.label) {
+        <div class="col-md-4">
+          <div class="stat-card card border-0 shadow-sm h-100">
+            <div class="card-body">
+              <div class="stat-value">{{ stat.value }}</div>
+              <div class="stat-label text-muted">{{ stat.label }}</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="row g-4 mt-1">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <h2 class="h4 mb-3">What this page is designed to show</h2>
+            <ul class="feature-list">
+              @for (item of page.highlights; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <h2 class="h5 mb-3">Explore more</h2>
+            <div class="link-stack">
+              @for (link of page.links; track link.label) {
+                <a [routerLink]="link.route">{{ link.label }}</a>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,176 @@
+<h2 class="h4 mb-3">My Trip Cart</h2>
+
+<div class="card card-body mb-3">
+  <div class="row g-3 align-items-end">
+    <div class="col-12 col-md-5">
+      <label class="form-label">Trip budget (BDT)</label>
+      <div class="input-group">
+        <input
+          type="number"
+          min="1"
+          class="form-control"
+          [formControl]="budgetForm"
+          (keyup.enter)="applyBudget()"
+          placeholder="e.g. 25000"
+        />
+        <button class="btn btn-outline-primary" type="button" (click)="applyBudget()">Set</button>
+        @if (cart.budget() !== null) {
+          <button class="btn btn-outline-secondary" type="button" (click)="clearBudget()">Clear</button>
+        }
+      </div>
+    </div>
+    <div class="col-12 col-md-7">
+      <div class="d-flex justify-content-between">
+        <span>Selected total ({{ cart.selectedCount() }}): <strong>{{ cart.total() | number }} BDT</strong></span>
+        @if (cart.budget() !== null) {
+          <span [class.text-danger]="cart.overBudget()" [class.text-success]="!cart.overBudget()">
+            @if (cart.overBudget()) {
+              Over budget by {{ -(cart.remaining() ?? 0) | number }} BDT
+            } @else {
+              {{ cart.remaining() | number }} BDT left
+            }
+          </span>
+        }
+      </div>
+      @if (cart.budget() !== null) {
+        <div class="progress budget-bar mt-2">
+          <div
+            class="progress-bar"
+            [class.bg-danger]="cart.overBudget()"
+            [class.bg-success]="!cart.overBudget()"
+            [style.width.%]="usedPercent()"
+          ></div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+@if (cart.count() === 0) {
+  @if (message()) {
+    <div class="alert alert-success">{{ message() }}</div>
+  } @else {
+    <div class="alert alert-info">
+      Your cart is empty. <a routerLink="/tourist/slots">Browse services</a> and add the ones that fit your trip.
+      Nothing is booked until you pay.
+    </div>
+  }
+} @else {
+  <div class="row g-3">
+    <div class="col-12 col-lg-7">
+      <div class="form-check mb-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="select-all"
+          [checked]="cart.allSelected()"
+          [disabled]="paying()"
+          (change)="cart.toggleAll()"
+        />
+        <label class="form-check-label" for="select-all">
+          Select all ({{ cart.selectedCount() }}/{{ cart.count() }} selected)
+        </label>
+      </div>
+      @for (slot of cart.items(); track slot.id) {
+        <div
+          class="card mb-2"
+          [class.border-danger]="failedIds().includes(slot.id)"
+          [class.border-primary]="cart.isSelected(slot.id)"
+          [class.opacity-50]="!cart.isSelected(slot.id)"
+        >
+          <div class="card-body d-flex justify-content-between align-items-start gap-3">
+            <input
+              class="form-check-input mt-1 flex-shrink-0"
+              type="checkbox"
+              [checked]="cart.isSelected(slot.id)"
+              [disabled]="paying()"
+              [attr.aria-label]="'Select ' + slot.providerName"
+              (change)="cart.toggle(slot.id)"
+            />
+            <div class="flex-grow-1">
+              <span class="badge text-bg-secondary mb-1">{{ categoryLabel(slot.category) }}</span>
+              <h3 class="h6 mb-1">
+                @if (slot.origin) {
+                  {{ slot.origin }} -> {{ slot.destination }}
+                } @else {
+                  {{ slot.locationName }}
+                }
+              </h3>
+              <p class="small text-muted mb-0">{{ slot.providerName }} | {{ slot.startAt | date: 'medium' }}</p>
+              @if (slot.endAt) {
+                <p class="small text-muted mb-0">Check-out: {{ slot.endAt | date: 'mediumDate' }}</p>
+              }
+              @if (failedIds().includes(slot.id)) {
+                <p class="small text-danger mb-0">Booking failed. Slot may be full.</p>
+              }
+            </div>
+            <div class="text-end">
+              <div class="fw-semibold">{{ slot.price | number }} BDT</div>
+              <button
+                class="btn btn-link btn-sm text-danger p-0"
+                type="button"
+                [disabled]="paying()"
+                (click)="remove(slot)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+      <button class="btn btn-outline-secondary btn-sm" type="button" [disabled]="paying()" (click)="cart.clear()">
+        Empty cart
+      </button>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <form [formGroup]="paymentForm" (ngSubmit)="checkout()" class="card card-body">
+        <h3 class="h6">Pay to confirm all services</h3>
+        <div class="mb-3">
+          <label class="form-label">Payment method</label>
+          <select class="form-select" formControlName="method">
+            <option value="CARD">Card</option>
+            <option value="MOBILE_BANKING">Mobile Banking</option>
+            <option value="CASH">Cash</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Card/Wallet Number</label>
+          <input
+            class="form-control"
+            formControlName="cardNumber"
+            [class.is-invalid]="paymentForm.controls.cardNumber.touched && paymentForm.controls.cardNumber.invalid"
+          />
+          <div class="invalid-feedback">Use exactly 16 digits.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">CVV / PIN</label>
+          <input
+            class="form-control"
+            formControlName="cvv"
+            [class.is-invalid]="paymentForm.controls.cvv.touched && paymentForm.controls.cvv.invalid"
+          />
+          <div class="invalid-feedback">Use exactly 3 digits.</div>
+        </div>
+        @if (cart.overBudget()) {
+          <div class="alert alert-warning py-2">Selected total exceeds your budget. Untick a service or raise the budget.</div>
+        }
+        @if (cart.selectedCount() === 0) {
+          <div class="alert alert-info py-2">Tick at least one service to pay.</div>
+        }
+        <button class="btn btn-primary" type="submit" [disabled]="!canPay()">
+          @if (paying()) {
+            Processing...
+          } @else {
+            Pay {{ cart.total() | number }} BDT and Confirm
+          }
+        </button>
+      </form>
+      @if (message()) {
+        <div class="alert mt-3" [class.alert-success]="failedIds().length === 0" [class.alert-warning]="failedIds().length > 0">
+          {{ message() }}
+        </div>
+      }
+    </div>
+  </div>
+}

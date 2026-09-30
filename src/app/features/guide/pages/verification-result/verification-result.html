@@ -1,0 +1,18 @@
+<h2 class="h4 mb-3">Verification Result</h2>
+<div class="btn-group mb-3">
+  <button class="btn btn-outline-success" type="button" (click)="approved.set(true)">Approved</button>
+  <button class="btn btn-outline-danger" type="button" (click)="approved.set(false)">Rejected</button>
+</div>
+@if (approved() === true) {
+  <div class="alert alert-success">
+    Your guide application has been approved. You can now login.
+    <button class="btn btn-link p-0" type="button" (click)="continue()">Go to login</button>
+  </div>
+} @else if (approved() === false) {
+  <div class="alert alert-danger">
+    Your guide application was rejected. Re-submit if you have new details.
+    <button class="btn btn-link p-0" type="button" (click)="continue()">Apply again</button>
+  </div>
+} @else {
+  <div class="alert alert-secondary">Select the verification outcome to continue.</div>
+}

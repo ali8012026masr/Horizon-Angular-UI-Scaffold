@@ -1,0 +1,119 @@
+<div class="container py-5">
+  <div class="row justify-content-center g-4">
+    <div class="col-12 col-lg-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4">
+          <h1 class="h3 mb-1">Horizon</h1>
+          <p class="text-muted mb-4">Sign in to continue your tour journey.</p>
+
+          @if (registerSuccess()) {
+            <div class="alert alert-success">Account created. You can log in now.</div>
+          }
+
+          @if (!showRegister()) {
+            <form [formGroup]="form" (ngSubmit)="login()" class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" formControlName="email" />
+                @if (form.controls.email.invalid && form.controls.email.touched) {
+                  <div class="invalid-feedback d-block">Enter a valid email address.</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Password</label>
+                <input class="form-control" type="password" formControlName="password" />
+                @if (form.controls.password.invalid && form.controls.password.touched) {
+                  <div class="invalid-feedback d-block">Enter your password (at least 6 characters).</div>
+                }
+              </div>
+
+              <div class="col-12 text-end">
+                <a routerLink="/forgot-password" class="small">Forgot password?</a>
+              </div>
+
+              @if (invalid()) {
+                <div class="col-12 alert alert-danger mb-0">
+                  Invalid credentials. Use one of the demo accounts to the right for a quick login.
+                </div>
+              }
+
+              <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">Login</button>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-outline-primary w-100" type="button" (click)="toggleRegister(true)">
+                  New User Registration
+                </button>
+              </div>
+            </form>
+          } @else {
+            <form [formGroup]="registerForm" (ngSubmit)="register()" class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Full name</label>
+                <input class="form-control" formControlName="name" />
+                @if (registerForm.controls.name.invalid && registerForm.controls.name.touched) {
+                  <div class="invalid-feedback d-block">Enter your name (at least 3 characters).</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" formControlName="email" />
+                @if (registerForm.controls.email.invalid && registerForm.controls.email.touched) {
+                  <div class="invalid-feedback d-block">Enter a valid email address.</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Password</label>
+                <input class="form-control" type="password" formControlName="password" />
+                @if (registerForm.controls.password.invalid && registerForm.controls.password.touched) {
+                  <div class="invalid-feedback d-block">Enter a password (at least 6 characters).</div>
+                }
+              </div>
+
+              @if (registerError()) {
+                <div class="col-12 alert alert-danger mb-0">{{ registerError() }}</div>
+              }
+
+              <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">Register</button>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-outline-secondary w-100" type="button" (click)="toggleRegister(false)">
+                  Back to Login
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-1">Demo accounts</h2>
+          <p class="text-muted mb-3">Click a role below to log in instantly and jump into that flow.</p>
+
+          <div class="list-group">
+            @for (account of demoAccounts; track account.id) {
+              <button
+                type="button"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                (click)="loginAsDemo(account)"
+              >
+                <span>
+                  <span class="fw-semibold d-block">{{ account.label }}</span>
+                  <span class="text-muted small">{{ account.name }} &middot; {{ account.email }}</span>
+                </span>
+                <span class="badge text-bg-primary">Login</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

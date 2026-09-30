@@ -1,0 +1,109 @@
+<div class="container py-4">
+<h2 class="h4 mb-3">Apply as Tour Guide</h2>
+<form [formGroup]="form" (ngSubmit)="submit()" class="row g-3">
+  <div class="col-12 col-md-6">
+    <label class="form-label">Full Name</label>
+    <input class="form-control" formControlName="fullName" />
+    @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+      <div class="invalid-feedback d-block">Provide a valid name with at least 3 characters.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Email</label>
+    <input class="form-control" type="email" formControlName="email" />
+    @if (form.controls.email.invalid && form.controls.email.touched) {
+      <div class="invalid-feedback d-block">Enter a valid email address.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Password</label>
+    <input class="form-control" type="password" formControlName="password" />
+    @if (form.controls.password.invalid && form.controls.password.touched) {
+      <div class="invalid-feedback d-block">Password must be at least 6 characters.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Phone</label>
+    <input class="form-control" formControlName="phone" />
+    @if (form.controls.phone.invalid && form.controls.phone.touched) {
+      <div class="invalid-feedback d-block">Enter a 10–15 digit phone number.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">National ID</label>
+    <input class="form-control" formControlName="nationalId" />
+    @if (form.controls.nationalId.invalid && form.controls.nationalId.touched) {
+      <div class="invalid-feedback d-block">Enter a valid national ID number.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Preferred Location</label>
+    <input class="form-control" formControlName="location" />
+    @if (form.controls.location.invalid && form.controls.location.touched) {
+      <div class="invalid-feedback d-block">Enter the guide's primary tour location.</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Your Address</label>
+    <input class="form-control" formControlName="address" />
+    @if (form.controls.address.invalid && form.controls.address.touched) {
+      <div class="invalid-feedback d-block">Provide a postal address (street, city).</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Languages</label>
+    <input class="form-control" placeholder="e.g., English, Spanish" formControlName="languages" />
+    @if (form.controls.languages.invalid && form.controls.languages.touched) {
+      <div class="invalid-feedback d-block">List languages you can guide in (comma separated).</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Years of Experience</label>
+    <input class="form-control" type="number" formControlName="experienceYears" />
+    @if (form.controls.experienceYears.invalid && form.controls.experienceYears.touched) {
+      <div class="invalid-feedback d-block">Enter years of experience (0 or more).</div>
+    }
+  </div>
+
+  <div class="col-12 col-md-6">
+    <label class="form-label">Daily Rate</label>
+    <input class="form-control" type="number" formControlName="price" />
+    @if (form.controls.price.invalid && form.controls.price.touched) {
+      <div class="invalid-feedback d-block">Enter a minimum rate.</div>
+    }
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Experience Summary</label>
+    <textarea class="form-control" rows="3" formControlName="experience"></textarea>
+    @if (form.controls.experience.invalid && form.controls.experience.touched) {
+      <div class="invalid-feedback d-block">Describe your guiding experience.</div>
+    }
+  </div>
+
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" formControlName="negotiable" id="negotiable" />
+      <label class="form-check-label" for="negotiable">Price negotiable</label>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex gap-2 align-items-center">
+    <button class="btn btn-primary" type="submit">Submit Application</button>
+    @if (submitted()) {
+      <span class="text-success">Application sent. Checking verification...</span>
+    }
+    @if (error()) {
+      <span class="text-danger">{{ error() }}</span>
+    }
+  </div>
+</form>
+</div>

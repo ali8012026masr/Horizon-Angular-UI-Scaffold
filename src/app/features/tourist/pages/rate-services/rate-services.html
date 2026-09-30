@@ -1,0 +1,36 @@
+<h2 class="h4 mb-3">Rate a Booked Service</h2>
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (ratableBookings().length === 0) {
+  <div class="alert alert-info">You have no completed bookings to rate yet.</div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card card-body">
+    <div class="mb-3">
+      <label class="form-label">Booking</label>
+      <select class="form-select" formControlName="bookingId" [class.is-invalid]="form.controls.bookingId.touched && form.controls.bookingId.invalid">
+        <option value="">Select a completed booking</option>
+        @for (booking of ratableBookings(); track booking.bookingId) {
+          <option [value]="booking.bookingId">{{ booking.label }}</option>
+        }
+      </select>
+      <div class="invalid-feedback">Please pick a booked service to rate.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Rating (1-5)</label>
+      <input type="number" class="form-control" formControlName="rating" [class.is-invalid]="form.controls.rating.touched && form.controls.rating.invalid" />
+      <div class="invalid-feedback">Rating must be between 1 and 5.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Comment</label>
+      <textarea class="form-control" rows="3" formControlName="comment" [class.is-invalid]="form.controls.comment.touched && form.controls.comment.invalid"></textarea>
+      <div class="invalid-feedback">Comment requires at least 8 characters.</div>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit Rating</button>
+  </form>
+}
+@if (submitted()) {
+  <div class="alert alert-success mt-3">Thank you for your feedback.</div>
+}
+@if (error()) {
+  <div class="alert alert-danger mt-3">{{ error() }}</div>
+}

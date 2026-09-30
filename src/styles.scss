@@ -1,0 +1,276 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap");
+@import "./styles/variables";
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --horizon-brand: #f88922;
+  --horizon-brand-dark: #d96e0d;
+  --horizon-ink: #000000;
+  --horizon-dark-surface: #dcefe3;
+  --horizon-text: #000000;
+  --horizon-muted: #000000;
+  --horizon-surface: #ffffff;
+  --horizon-raised: #f9fafb;
+  --horizon-border: #e5e7eb;
+  --horizon-shadow: rgba(0, 0, 0, 0.18) 0 10px 24px 0, rgba(0, 0, 0, 0.12) 0 2px 8px 0;
+  --horizon-radius-xs: 6px;
+  --horizon-radius-sm: 8px;
+  --horizon-radius-md: 10px;
+  --horizon-radius-lg: 16px;
+  --horizon-content-width: 1200px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--horizon-raised);
+  color: var(--horizon-text);
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--horizon-ink);
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p, label, input, select, textarea, button, .table, .badge,
+.nav-link, .navbar-brand, .form-check-label, .alert, .list-group-item {
+  font-family: "Nunito", "Segoe UI", sans-serif;
+}
+
+img { max-width: 100%; }
+
+main.container,
+section.container,
+.container-fluid {
+  max-width: var(--horizon-content-width);
+  position: relative;
+  z-index: 1;
+}
+
+main.container {
+  padding-bottom: 4rem;
+  padding-top: 2rem;
+}
+
+.navbar {
+  background: var(--horizon-surface);
+  border-bottom: 1px solid var(--horizon-border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-brand {
+  color: var(--horizon-ink) !important;
+  font-weight: 800;
+}
+
+.navbar-nav .nav-link {
+  border-radius: var(--horizon-radius-sm);
+  color: var(--horizon-text) !important;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 12px;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  background: rgba(248, 137, 34, 0.1);
+  color: var(--horizon-brand-dark) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--horizon-border);
+  border-radius: var(--horizon-radius-sm);
+}
+
+.btn {
+  border-radius: var(--horizon-radius-sm);
+  font-weight: 600;
+  min-height: 42px;
+  padding: 10px 16px;
+  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible,
+a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(248, 137, 34, 0.35);
+  outline: 2px solid var(--horizon-brand);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--horizon-brand);
+  border-color: var(--horizon-brand);
+  color: var(--horizon-ink);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--horizon-brand-dark);
+  border-color: var(--horizon-brand-dark);
+  color: #000000;
+}
+
+.btn-outline-primary {
+  border-color: var(--horizon-brand);
+  color: var(--horizon-brand-dark);
+}
+
+.btn-outline-primary:hover {
+  background: var(--horizon-brand);
+  border-color: var(--horizon-brand);
+  color: var(--horizon-ink);
+}
+
+.btn-outline-secondary {
+  border-color: #9ca3af;
+  color: var(--horizon-text);
+}
+
+.btn-outline-secondary:hover {
+  background: var(--horizon-dark-surface);
+  border-color: #9bc8aa;
+  color: var(--horizon-ink);
+}
+
+.card {
+  background: var(--horizon-surface);
+  border: 1px solid var(--horizon-border);
+  border-radius: var(--horizon-radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  box-shadow: var(--horizon-shadow);
+}
+
+.card-body { padding: 24px; }
+
+.form-control,
+.form-select,
+.input-group-text {
+  background: var(--horizon-surface);
+  border: 1px solid #d1d5db;
+  border-radius: var(--horizon-radius-sm);
+  color: var(--horizon-text);
+  min-height: 44px;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--horizon-brand);
+  box-shadow: 0 0 0 3px rgba(248, 137, 34, 0.18);
+}
+
+.form-label {
+  color: var(--horizon-text);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.table,
+.list-group,
+.alert {
+  border-radius: var(--horizon-radius-md);
+}
+
+.table {
+  background: var(--horizon-surface);
+  border: 1px solid var(--horizon-border);
+  overflow: hidden;
+}
+
+.table thead th {
+  background: var(--horizon-dark-surface);
+  border-bottom: 0;
+  color: var(--horizon-ink);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.table td, .table th {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+.badge {
+  border-radius: var(--horizon-radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 9px;
+}
+
+.list-group-item {
+  background: var(--horizon-surface);
+  border-color: var(--horizon-border);
+}
+
+.text-muted { color: #000000 !important; }
+
+.bg-primary, .text-bg-primary {
+  background: var(--horizon-brand) !important;
+  color: var(--horizon-ink) !important;
+}
+
+.bg-secondary, .text-bg-secondary {
+  background: #fff1e4 !important;
+  color: #9a4d0b !important;
+}
+
+.navbar-dark {
+  background: var(--horizon-dark-surface) !important;
+  border-bottom-color: #b8d8c2;
+}
+
+.navbar-dark .nav-link,
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-text { color: var(--horizon-ink) !important; }
+
+.navbar-dark .btn-outline-light {
+  border-color: #6b7280;
+  color: #4b5563;
+}
+
+.navbar-dark .btn-outline-light:hover,
+.navbar-dark .btn-outline-light:focus {
+  background: rgba(75, 85, 99, 0.1);
+  border-color: #4b5563;
+  color: #374151;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  background: rgba(248, 137, 34, 0.18);
+  color: var(--horizon-ink) !important;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav .nav-link { padding-inline: 10px; }
+  .navbar-collapse { padding: 12px 0; }
+}
+
+@media (max-width: 575.98px) {
+  main.container { padding-top: 24px; }
+  .card-body { padding: 20px; }
+}

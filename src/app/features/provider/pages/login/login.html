@@ -1,0 +1,20 @@
+<h2 class="h4 mb-3">Provider Login</h2>
+<form [formGroup]="form" (ngSubmit)="login()" class="card card-body">
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input class="form-control" formControlName="email" [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+    <div class="invalid-feedback">Valid email required.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input type="password" class="form-control" formControlName="password" [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid" />
+    <div class="invalid-feedback">Password is required.</div>
+  </div>
+  <button class="btn btn-primary" type="submit">Login</button>
+  <div class="mt-2">
+    <a routerLink="/forgot-password" class="small">Forgot password?</a>
+  </div>
+</form>
+@if (invalid()) {
+  <div class="alert alert-danger mt-3">Credentials invalid.</div>
+}

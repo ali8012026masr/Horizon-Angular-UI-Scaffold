@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">My Groups</h2>
+  <a class="btn btn-primary btn-sm" routerLink="/tourist/group/create">Create Group</a>
+</div>
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (groups().length === 0) {
+  <div class="alert alert-info">
+    You are not part of any group yet. <a routerLink="/tourist/group/create" class="alert-link">Create one</a>
+    or <a routerLink="/tourist/group/join" class="alert-link">join with a code</a>.
+  </div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Join Code</th>
+          <th>Members</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (group of groups(); track group.id) {
+          <tr>
+            <td>{{ group.groupName }}</td>
+            <td>
+              <span class="font-monospace fw-semibold">{{ group.joinCode }}</span>
+              <button class="btn btn-sm btn-outline-secondary ms-2" type="button" (click)="copyCode(group)">
+                @if (copiedId() === group.id) { Copied! } @else { Copy }
+              </button>
+            </td>
+            <td>{{ group.members.length }}</td>
+            <td>{{ group.createdAt | date: 'mediumDate' }}</td>
+            <td>
+              <a class="btn btn-sm btn-primary" [routerLink]="['/tourist/group/join']" [queryParams]="{ groupId: group.id }">Open</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

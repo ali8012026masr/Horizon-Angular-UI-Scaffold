@@ -1,0 +1,27 @@
+<h2 class="h4 mb-3">Book Shared Transport for Group</h2>
+
+@if (!groupId()) {
+  <div class="alert alert-warning">No group selected. <a routerLink="/tourist/group/create" class="alert-link">Create a group</a> or open this page from your group's link first.</div>
+}
+
+@if (loading()) {
+  <div class="spinner-border text-primary"></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (slots().length === 0) {
+  <div class="alert alert-info">No slots available for group booking.</div>
+} @else {
+  <div class="list-group">
+    @for (slot of slots(); track slot.id) {
+      <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <div class="fw-semibold">{{ slot.origin }} -> {{ slot.destination }}</div>
+          <div class="small text-muted">{{ slot.startAt | date: 'medium' }}</div>
+        </div>
+        <button class="btn btn-sm btn-primary" type="button" [disabled]="!groupId() || choosingId() === slot.id" (click)="choose(slot)">
+          @if (choosingId() === slot.id) { Booking... } @else { Choose }
+        </button>
+      </div>
+    }
+  </div>
+}

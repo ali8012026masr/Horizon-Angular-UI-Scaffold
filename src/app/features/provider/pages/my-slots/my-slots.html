@@ -1,0 +1,216 @@
+<div class="my-slots-page">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h2 class="h4 mb-1">My Published Services</h2>
+      <p class="text-muted mb-0">Review and update every services you have published.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-primary" routerLink="/provider/slots/category">Create new service</a>
+      <a class="btn btn-outline-secondary" routerLink="/provider/dashboard">Back to dashboard</a>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  } @else {
+    @if (success()) {
+      <div class="alert alert-success">{{ success() }}</div>
+    }
+
+    @if (slots().length === 0) {
+      <div class="alert alert-info">You have not published any services yet.</div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Category</th>
+              <th>Route / Place</th>
+              <th>Schedule</th>
+              <th>Seats</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (slot of slots(); track slot.id) {
+              @if (editingId() === slot.id && draft()) {
+                <tr>
+                  <td colspan="8">
+                    <div class="details-backdrop" (click)="cancelEdit()"></div>
+                    <div class="details-float-panel" (click)="$event.stopPropagation()">
+                      <div class="details-header d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                          <span class="badge text-bg-primary-subtle text-primary-emphasis px-2 py-1 mb-2 d-inline-block">{{ labelFor(slot.category) }}</span>
+                          <h4 class="mb-0 h6">Edit published service</h4>
+                        </div>
+                        <button class="btn-close" type="button" aria-label="Close edit" (click)="cancelEdit()"></button>
+                      </div>
+
+                      <div class="row g-3">
+                        @switch (getEditFormType(slot)) {
+                          @case ('transport') {
+                            <div class="col-md-6">
+                              <label class="form-label">Origin</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.origin" (ngModelChange)="updateDraft('origin', $event)" />
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label">Destination</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.destination" (ngModelChange)="updateDraft('destination', $event)" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Start</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.startAt)" (ngModelChange)="updateDraft('startAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">End</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.endAt)" (ngModelChange)="updateDraft('endAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Capacity</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.capacity" (ngModelChange)="updateDraft('capacity', +$event)" />
+                            </div>
+                            <div class="col-md-12">
+                              <label class="form-label">Price per seat</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.price" (ngModelChange)="updateDraft('price', +$event)" />
+                            </div>
+                          }
+                          @case ('stay') {
+                            <div class="col-md-12">
+                              <label class="form-label">Property name / Location</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.locationName" (ngModelChange)="updateDraft('locationName', $event)" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Check-in</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.startAt)" (ngModelChange)="updateDraft('startAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Check-out</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.endAt)" (ngModelChange)="updateDraft('endAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Rooms available</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.capacity" (ngModelChange)="updateDraft('capacity', +$event)" />
+                            </div>
+                            <div class="col-md-12">
+                              <label class="form-label">Price per night</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.price" (ngModelChange)="updateDraft('price', +$event)" />
+                            </div>
+                          }
+                          @case ('venue') {
+                            <div class="col-md-12">
+                              <label class="form-label">Venue name / Location</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.locationName" (ngModelChange)="updateDraft('locationName', $event)" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Event date</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.startAt)" (ngModelChange)="updateDraft('startAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Closing time</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.endAt)" (ngModelChange)="updateDraft('endAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Capacity</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.capacity" (ngModelChange)="updateDraft('capacity', +$event)" />
+                            </div>
+                            <div class="col-md-12">
+                              <label class="form-label">Rental price</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.price" (ngModelChange)="updateDraft('price', +$event)" />
+                            </div>
+                          }
+                          @case ('dining') {
+                            <div class="col-md-12">
+                              <label class="form-label">Restaurant name / Location</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.locationName" (ngModelChange)="updateDraft('locationName', $event)" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Date</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.startAt)" (ngModelChange)="updateDraft('startAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Serving time</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.endAt)" (ngModelChange)="updateDraft('endAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Seats available</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.capacity" (ngModelChange)="updateDraft('capacity', +$event)" />
+                            </div>
+                            <div class="col-md-12">
+                              <label class="form-label">Price per person</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.price" (ngModelChange)="updateDraft('price', +$event)" />
+                            </div>
+                          }
+                          @default {
+                            <div class="col-md-12">
+                              <label class="form-label">Title / venue / Location</label>
+                              <input class="form-control" type="text" [ngModel]="draft()!.locationName" (ngModelChange)="updateDraft('locationName', $event)" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Starts</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.startAt)" (ngModelChange)="updateDraft('startAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Ends</label>
+                              <input class="form-control" type="datetime-local" [ngModel]="toDateTimeInput(draft()!.endAt)" (ngModelChange)="updateDraft('endAt', $event ? $event + ':00' : '')" />
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label">Capacity</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.capacity" (ngModelChange)="updateDraft('capacity', +$event)" />
+                            </div>
+                            <div class="col-md-12">
+                              <label class="form-label">Price</label>
+                              <input class="form-control" type="number" min="1" [ngModel]="draft()!.price" (ngModelChange)="updateDraft('price', +$event)" />
+                            </div>
+                          }
+                        }
+
+                        <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+                          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="cancelEdit()">Cancel</button>
+                          <button class="btn btn-primary btn-sm" type="button" (click)="saveEdit()" [disabled]="savingId() === slot.id">
+                            @if (savingId() === slot.id) { Saving... } @else { Save changes }
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              } @else {
+                <tr>
+                  <td>
+                    <div class="fw-semibold">{{ slot.id }}</div>
+                    <small class="text-muted">{{ slot.providerName }}</small>
+                  </td>
+                  <td>{{ labelFor(slot.category) }}</td>
+                  <td>{{ getRoute(slot) }}</td>
+                  <td>{{ slot.startAt | date: 'medium' }}</td>
+                  <td>{{ slot.availableSeats }}/{{ slot.capacity }}</td>
+                  <td>{{ slot.price | currency: 'USD' }}</td>
+                  <td>
+                    <span class="badge rounded-pill {{ getStatusClass(slot.status) }}">{{ slot.status }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-outline-primary btn-sm" type="button" (click)="startEdit(slot)">Edit</button>
+                      <button class="btn btn-outline-danger btn-sm" type="button" (click)="deleteSlot(slot.id)" [disabled]="deletingId() === slot.id">
+                        @if (deletingId() === slot.id) { Deleting... } @else { Delete }
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

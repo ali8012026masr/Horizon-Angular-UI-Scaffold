@@ -1,0 +1,13 @@
+<h2 class="h4 mb-3">Verification Result</h2>
+<div class="btn-group mb-3">
+  <button class="btn btn-outline-success" type="button" (click)="approved.set(true)">Approved</button>
+  <button class="btn btn-outline-danger" type="button" (click)="approved.set(false)">Rejected</button>
+</div>
+@if (approved()) {
+  <div class="alert alert-success">
+    Account approved. Continue to provider login.
+    <a routerLink="/provider/login" class="alert-link">Login</a>
+  </div>
+} @else {
+  <div class="alert alert-danger">Account rejected. Contact system admin for re-submission.</div>
+}

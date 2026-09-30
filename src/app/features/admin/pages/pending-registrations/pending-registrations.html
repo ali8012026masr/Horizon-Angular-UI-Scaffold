@@ -1,0 +1,78 @@
+<h2 class="h4 mb-3">Pending Registrations</h2>
+@if (loading()) {
+  <div class="spinner-border text-dark" role="status"><span class="visually-hidden">Loading...</span></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (registrations().length === 0) {
+  <div class="alert alert-info">There are no pending registrations at this time.</div>
+} @else {
+  <div class="row g-4 justify-content-start">
+    @for (registration of registrations(); track registration.id) {
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <article class="card pending-registration-card shadow-sm border-0">
+          <div class="card-body p-3 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge text-bg-primary-subtle text-primary-emphasis px-2 py-1">{{ registration.applicantType }}</span>
+                <span class="badge text-bg-warning text-dark px-2 py-1">{{ registration.status }}</span>
+              </div>
+
+              <h3 class="h6 mb-2 card-title">{{ registration.applicantName }}</h3>
+
+              <div class="small-info-block">
+                <div class="small-label">Submitted</div>
+                <div class="small-value">{{ registration.submittedAt ? (registration.submittedAt | date: 'mediumDate') : 'Recently' }}</div>
+              </div>
+
+              <div class="small-info-block">
+                <div class="small-label">Role</div>
+                <div class="small-value">{{ registration.applicantType }}</div>
+              </div>
+
+              <p class="mb-0 summary-text">{{ registration.summary ?? registration.details ?? 'Application is awaiting review.' }}</p>
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <button class="btn btn-sm btn-outline-primary flex-grow-1" type="button" (click)="toggleDetails(registration.id)">
+                {{ isDetailsOpen(registration.id) ? 'Hide details' : 'View details' }}
+              </button>
+              <button class="btn btn-sm btn-success" type="button" (click)="approve(registration.id)">Approve</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    }
+  </div>
+
+  @if (activeDetailsId()) {
+    @let selected = selectedRegistration();
+    @if (selected && selected.fields?.length) {
+      <div class="details-backdrop" (click)="closeDetails()"></div>
+      <div class="details-float-panel shadow-lg" (click)="$event.stopPropagation()">
+        <div class="details-header d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <span class="badge text-bg-primary-subtle text-primary-emphasis px-2 py-1 mb-2 d-inline-block">{{ selected.applicantType }}</span>
+            <h4 class="mb-0 h6">{{ selected.applicantName }}</h4>
+          </div>
+          <button class="btn-close" type="button" aria-label="Close details" (click)="closeDetails()"></button>
+        </div>
+
+        <div class="row g-2">
+          @for (field of selected.fields; track field.label) {
+            <div class="col-12">
+              <div class="field-box">
+                <div class="field-label">{{ field.label }}</div>
+                <div class="field-value">{{ formatFieldValue(field.value) }}</div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn btn-success" type="button" (click)="approve(selected.id)">Approve</button>
+          <button class="btn btn-danger" type="button" (click)="reject(selected.id)">Reject</button>
+        </div>
+      </div>
+    }
+  }
+}

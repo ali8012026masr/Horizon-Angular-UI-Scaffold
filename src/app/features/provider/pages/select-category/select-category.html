@@ -1,0 +1,14 @@
+<h2 class="h4 mb-3">Select Service Category</h2>
+<form [formGroup]="form" (ngSubmit)="next()" class="card card-body">
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <select class="form-select" formControlName="category" [class.is-invalid]="form.controls.category.touched && form.controls.category.invalid">
+      <option value="">Select category</option>
+      @for (category of categories; track category) {
+        <option [value]="category">{{ category }}</option>
+      }
+    </select>
+    <div class="invalid-feedback">Category required.</div>
+  </div>
+  <button class="btn btn-primary" type="submit">Continue to Service Details</button>
+</form>
